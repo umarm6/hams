@@ -21,85 +21,14 @@
 <main class="w-full">
 
     <!-- start header -->
-    @include('layouts.header',[
-    'textColor'=>'white'
+@include('layouts.header',[
+    'textColor'=>'teal-500'
 ])
+
     <!-- end header -->
 
-    <!-- start hero -->
-    <div class="bg-gray-100">
-        <section class="cover bg-blue-teal-gradient relative bg-blue-600 px-4 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 overflow-hidden py-48 flex
-      items-center min-h-screen">
-            <div class="h-full absolute top-0 left-0 z-0">
-                <img src="{{asset('/images/cover-bg.jpg')}}" alt="" class="w-full h-full object-cover opacity-20">
-            </div>
-
-            <div class="lg:w-3/4 xl:w-2/4 relative z-10 h-100 lg:mt-16">
-                <div>
-                    <h1 class="text-white text-4xl md:text-5xl xl:text-6xl font-bold leading-tight">A better life starts with a
-                        beautiful
-                        smile.</h1>
-                    <p class="text-blue-100 text-xl md:text-2xl leading-snug mt-4">Welcome to the Dentist Office of Dr. Thomas
-                        Dooley,
-                        where
-                        trust
-                        and comfort are priorities.</p>
-                    <a href="#" class="px-8 py-4 bg-teal-500 text-white rounded inline-block mt-8 font-semibold">Book
-                        Appointment</a>
-                </div>
-            </div>
-        </section>
-    </div>
-    <!-- end hero -->
-
-    <section class="relative px-4 py-16 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 lg:py-32">
-        <div class="flex flex-col lg:flex-row lg:-mx-8">
-            <div class=" w-1/3 mx-auto bg-gray-200/40 p-5 border rounded ">
-                <h2 class="text-3xl text-center leading-tight font-bold mt-4">Search the Doctor </h2>
-
-                <form type="get" action="{{route('doctors.search')}}">
-                    <div class="flex flex-wrap mt-5">
-                        <div class=" w-full px-4">
-                            <div class="relative w-full mb-3">
-                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="doctor">
-                                    Doctors
-                                </label>
-                                <select required  name="doctor" id="doctor" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" >
-                                    <option value=""> Select a Doctor</option>
-                                    @foreach($doctors as $doctor)
-                                        <option value="{{$doctor['id']}}"> {{$doctor['full_name']}}</option>
-
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        </div>
-                    <div class="flex flex-wrap mt-3">
-                    <div class="w-full px-4">
-                            <div class="relative w-full mb-3">
-                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="date">
-                                    Date
-                                </label>
-                                <input type="date" value="2025-04-25" required name="date" id="date" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap mt-3">
-                    <div class="w-6/12 px-4">
-                        <button type="submit" class="bg-teal-500 btn text-white"> Search</button>
-                    </div>
-                    </div>
-
-                    <x-input-error messages="{{$errors->first()}}" class="mt-2"/>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-
-   {{-- <!-- start about -->
-    <section class="relative px-4 py-16 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 lg:py-32">
+    <!-- start about -->
+    <section class="relative mt-20 px-4 py-16 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 lg:py-32">
         <div class="flex flex-col lg:flex-row lg:-mx-8">
             <div class="w-full lg:w-1/2 lg:px-8">
                 <h2 class="text-3xl leading-tight font-bold mt-4">Welcome to the Dentist Office of Dr. Thomas Dooley</h2>
@@ -257,11 +186,21 @@
             </div>
         </div>
     </section>
-    <!-- end blog -->--}}
+    <!-- end blog -->
 
-    <!-- start footer -->
-    @include('layouts.footer')
-    <!-- end footer -->
+    <!-- start cta -->
+    <section
+        class="relative bg-blue-teal-gradient px-4 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 py-12 text-center md:text-left">
+        <div class="md:flex md:items-center md:justify-center">
+            <h2 class="text-xl font-bold text-white">Get in touch with us today! <br class="block md:hidden">Call us on: +1
+                562-789-1935</h2>
+            <a href="#"
+               class="px-8 py-4 bg-white text-blue-600 rounded inline-block font-semibold md:ml-8 mt-4 md:mt-0">Book
+                Appointment</a>
+        </div>
+    </section>
+    <!-- end cta -->
+@include('layouts.footer')
 
 </main>
 </body>
