@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('zip')->nullable();
             $table->text('image')->nullable();
-            $table->date('date_of_birth');
-            $table->enum('gender', ['male', 'female']);
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();

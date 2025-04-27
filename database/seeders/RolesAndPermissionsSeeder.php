@@ -32,7 +32,7 @@ class RolesAndPermissionsSeeder extends Seeder
         //truncating the tables
         Schema::disableForeignKeyConstraints();
         DB::table('permissions')->truncate();
-        DB::table('model_has_permissions')->truncate();
+        DB::table('role_has_permissions')->truncate();
         DB::table('roles')->truncate();
         Schema::enableForeignKeyConstraints();
 

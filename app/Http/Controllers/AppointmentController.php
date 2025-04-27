@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Constants\Specialist;
 use App\Enums\RolesEnum;
+use App\Models\Appointments;
 use App\Models\DoctorInfo;
 use App\Models\User;
+use Carbon\Carbon;
 use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -18,86 +21,47 @@ class AppointmentController extends Controller
 {
     //
 
-    public function index($id){
+    public function index(){
 
-         $doctor = User::findOrFail($id); // Returns only users with the role 'writer'
-         return view('appointment.book',[
-            'doctor'=>$doctor
+        $user = Auth::user();
+        $appointments = Appointments::wherePatientId($user?->id)->get()->sortByDesc('created_at'); //default patient role
+
+        if($user->hasRole(RolesEnum::DOCTOR->value)){
+            $appointments = Appointments::whereDoctorId($user?->id)->get()->sortByDesc('created_at');
+        }
+
+        if($user->hasRole(RolesEnum::ADMIN->value)){
+            $appointments = Appointments::all()->sortByDesc('created_at');
+        }
+
+        return view('appointment.index',[
+        'appointments'=>$appointments
         ]);
+
     }
 
-    public function create(){
-        $specialist = Specialist::data(); // Returns only users with the role 'writer'
-        return view('appointment.book',[
-            'specialist'=>$specialist
+    public function create(Request $request,$id = null){
+
+        if (!User::find($id)?->exists()  && $id != null){
+            ToastMagic::error('Doctor not found');
+            return redirect()->route('dashboard');
+        }
+
+        $doctors = User::role(RolesEnum::DOCTOR->value)->get();
+
+        return view('appointment.create',[
+            'doctors'=>$doctors,
+            'selectedDoctor'=>$id
         ]);
     }
 
     public function store(Request $request){
 
-        $validator = Validator::make($request->all(),array(
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required'
-        ));
-
-        if($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ToastMagic::error($error);
-            }
-
-            return redirect()->back();
-         }
-
-
-        try {
-
-            //creating user and assignnig role
-            $user = User::firstOrCreate([
-                'first_name'=>$request?->first_name,
-                'last_name'=>$request?->last_name,
-                'email'=>$request?->email,
-                'mobile'=>$request?->mobile,
-                'date_of_birth'=>$request?->dob,
-                'gender'=>$request?->gender,
-                'password'=>Hash::make($request?->password),
-            ])->assignRole(RolesEnum::DOCTOR->value);
-
-
-            DoctorInfo::create([
-                'user_id'=>$user->id,
-                'doctor_fee'=>$request?->fee,
-                'specialist'=>$request?->specialist,
-                'description'=>$request?->description
-            ]);
-
-
-        }catch (Exception $exception){
-            Log::info($exception->getMessage());
-            ToastMagic::error($exception->getMessage());
-
-            return redirect()->back();
-
-         }
-        ToastMagic::success('Doctor created successfully');
-
-        return redirect()->back();
-    }
-
-    public function edit($id){
-        $specialist = Specialist::data(); // Returns only users with the role 'writer'
-        $user = User::whereId($id)->with('doctorInfo')->role(RolesEnum::DOCTOR->value)->firstOrFail();
-
-        return view('doctors.edit',
-            [
-            'user'=>$user,
-            'specialist'=>$specialist
-            ]);
-    }
-
-    public function update(Request $request,$id){
 
         $validator = Validator::make($request->all(),array(
-            'email' => 'required|email|',
+            'doctor' => 'required|exists:users,id',
+            'mobile' => 'required',
+            'email' => 'required'
         ));
 
         if($validator->fails()) {
@@ -109,29 +73,43 @@ class AppointmentController extends Controller
         }
 
 
+        $doctor = User::whereId($request->doctor)->first();
+        $day = Carbon::parse($request->get('date'))->format('l');
+
+        $doctorSchedule = $doctor->doctorSchedules()->where('day','=',$day);
+        dump($request->all());
+
+        if(!$doctorSchedule->exists()){
+            ToastMagic::error('Doctor is not available on this date');
+            return redirect()->back();
+        }
+
+        $latestDoctorAppointmentTime = $doctor->doctorAppointments()->get()->sortByDesc('created_at')->pluck('appointment_time')->first();
+        $doctorTimeStart = $doctorSchedule->first()->start_time->addMinutes($doctor->doctorInfo->patient_examination)->format('H:i');
+        $doctorEndTime = $doctorSchedule->first()->end_time;
+
+        if(!is_null($latestDoctorAppointmentTime)){
+
+             $doctorTimeStart = $latestDoctorAppointmentTime->addMinutes($doctor->doctorInfo->patient_examination)->format('H:i');
+
+        }
+
+        if (!Carbon::parse($doctorTimeStart)->lessThan($doctorEndTime)){
+            ToastMagic::error('Doctor appointment time slots are booked');
+        }
+
         try {
 
-            $user = User::findOrFail($id);
-
-            $password = is_null($request->password) ? $user->password : str($request->password);
-
-            $user->update([
+             Appointments::create([
                 'first_name'=>$request?->first_name,
                 'last_name'=>$request?->last_name,
                 'email'=>$request?->email,
                 'mobile'=>$request?->mobile,
-                'date_of_birth'=>$request?->dob,
-                'gender'=>$request?->gender,
-                'password'=>$password,
-            ]);
-
-
-            $user?->DoctorInfo->update([
-                'user_id'=>$user->id,
-                'doctor_fee'=>$request?->fee,
-                'specialist'=>$request?->specialist,
-                'description'=>$request?->description
-            ]);
+                'appointment_date'=>$request?->date,
+                'appointment_time'=>$doctorTimeStart,
+                'doctor_id'=>$doctor->id,
+                'patient_id'=>Auth::user()->id,
+             ]);
 
 
         }catch (Exception $exception){
@@ -140,22 +118,38 @@ class AppointmentController extends Controller
 
             return redirect()->back();
 
-        }
-        ToastMagic::success('Doctor updated successfully');
+         }
+        ToastMagic::success('Appointment created successfully');
 
-        return redirect()->back();
+        return redirect()->route('appointment.index');
     }
+
     public function destroy($id){
 
-        if (User::find($id)){
-            User::destroy($id);
-            DoctorInfo::destroy($id);
-            ToastMagic::success('Doctor deleted successfully');
+        if (Appointments::find($id)){
+            Appointments::destroy($id);
+            ToastMagic::success('Appointment deleted successfully');
             return redirect()->back();
         }
 
-        ToastMagic::error('Doctor could not deleted');
+        ToastMagic::error('Appointment could not deleted');
+        return redirect()->back();
 
+    }
+
+
+        public function approveOrCancel($status, $id){
+
+        if (Appointments::find($id)){
+            Appointments::whereId($id)->update([
+                'status'=>$status
+            ]);
+            ToastMagic::success("Appointment $status successfully");
+            return redirect()->back();
+        }
+
+        ToastMagic::error("Appointment could not $status");
+        return redirect()->back();
 
     }
 

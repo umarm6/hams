@@ -101255,3 +101255,16 @@ div.code-toolbar > .toolbar span:focus {
   color: inherit;
   text-decoration: none;
 }
+
+
+.pending-bg {
+    background-color: orange;
+}
+
+.confirmed-bg {
+    background-color: green;
+}
+
+.cancelled-bg {
+    background-color: red;
+}

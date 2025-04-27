@@ -18,6 +18,7 @@ return new class extends Migration
                 ->references('id')->on('users')
                 ->onDelete('cascade');
             $table->bigInteger('doctor_fee');
+            $table->bigInteger('patient_examination')->default(10);
             $table->string('specialist');
             $table->text('description')->nullable();
             $table->text('qualification')->nullable();

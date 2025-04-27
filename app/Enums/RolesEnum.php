@@ -22,20 +22,23 @@ enum RolesEnum: string
      {
         return match ($this) {
             static::DOCTOR => [
+                'view dashboard',
                 'view appointments',
                 'create appointments',
                 'delete appointments',
+                'approveOrCancel appointments',
                 'view ehr records',
                 'create ehr records',
                 'delete ehr records',
             ],
             static::Patients => [
-                'view patients',
                 'view appointments',
+                'edit appointments',
                 'create appointments',
                 'delete appointments',
             ],
             static::ADMIN => [
+                'view dashboard',
                 'create doctor',
                 'edit doctor',
                 'delete doctor',
@@ -48,6 +51,7 @@ enum RolesEnum: string
                 'edit appointments',
                 'create appointments',
                 'delete appointments',
+                'approveOrCancel appointments',
                 'view ehr records',
                 'create ehr records',
                 'delete ehr records',

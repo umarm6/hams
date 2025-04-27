@@ -15,4 +15,12 @@ class DoctorSchedules extends Model
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
+
+    protected function casts(): array
+    {
+        return [
+            'start_time' => 'datetime',
+            'end_time' => 'datetime'
+        ];
+    }
 }

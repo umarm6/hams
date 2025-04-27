@@ -43,10 +43,10 @@ class DoctorsController extends Controller
         ]);
 
         $day = Carbon::parse($request->get('date'))->format('l');
-        $doctors = User::find($request->get('doctor'))->DoctorSchedules()->where('day','=',$day)->exists();
+        $doctors = User::find($request->get('doctor'))->doctorSchedules()->where('day','=',$day)->exists();
 
          if($doctors){
-             return redirect()->route('appointment.index',$request->get('doctor'));
+             return redirect()->route('appointment.create',$request->get('doctor'));
         }
 
          return redirect()->back()->withErrors('Doctor not available on this day');
@@ -87,6 +87,7 @@ class DoctorsController extends Controller
             DoctorInfo::create([
                 'user_id'=>$user->id,
                 'doctor_fee'=>$request?->fee,
+                'patient_examination'=>$request?->patient_examination,
                 'specialist'=>$request?->specialist,
                 'description'=>$request?->description
             ]);
@@ -171,6 +172,7 @@ class DoctorsController extends Controller
             $user?->DoctorInfo->update([
                 'user_id'=>$user->id,
                 'doctor_fee'=>$request?->fee,
+                'patient_examination'=>$request?->patient_examination,
                 'specialist'=>$request?->specialist,
                 'description'=>$request?->description
             ]);

@@ -101,9 +101,21 @@
                     <li class="md:ml-4"><a class="py-2 inline-block text-{{$textColor}} md:px-2 font-semibold" href="#">Contact
                             Us</a></li>
                     <li class="md:ml-6 mt-3 md:mt-0">
+                        @guest()
                         <a class="inline-block font-semibold px-4 py-2 text-{{$textColor}} bg-blue-600 md:bg-transparent md:text-{{$textColor}} border border-{{$textColor}} rounded"
                            href="{{route('login')}}">
                             Login</a>
+                        @endguest
+                        @auth()
+                        <a class="inline-block font-semibold px-4 py-2 text-{{$textColor}} bg-blue-600 md:bg-transparent md:text-{{$textColor}} border border-{{$textColor}} rounded"
+                           href="{{route('dashboard')}}">
+                            Dashboard</a>
+                            <a class="inline-block font-semibold px-4 py-2 text-{{$textColor}} bg-blue-600 md:bg-transparent md:text-{{$textColor}} border border-{{$textColor}} rounded"
+                           href="{{route('dashboard')}}">
+                            Log Out
+                            <i class="fa ml-2 fas  fa-sign-out" ></i>
+                            </a>
+                        @endauth
                     </li>
                 </ul>
             </nav>

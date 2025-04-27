@@ -12,24 +12,26 @@
             </button>
         </div>
         <!-- end sidebar toggle -->
-
+        @can('view dashboard')
          <!-- link -->
         <a href="/" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
             <i class="fad fa-chart-pie  mr-2"></i>
             Home
         </a>
-        <hr>
 
+        <hr>
+@endcan
         @can('view appointments')
 
         <!-- link -->
-        <a href="./index.html" class="mb-3 mt-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+        <a href="{{route('appointment.index')}}" class="mb-3 mt-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
             <i class="fad fa-calendar-alt  mr-2"></i>
             Appointments
         </a>
         <hr>
          <!-- end link -->
         @endcan
+
         @can('view doctor')
 
         <!-- link -->

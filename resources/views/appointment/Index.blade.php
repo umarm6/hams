@@ -9,24 +9,23 @@
 
             </div>
              <div class="relative">
-                 @can('create doctor')
-                     <a href="{{route('doctors.create')}}" class="btn-bs-primary  mr-5">Add Doctors
-                         <i class="fas fa-user-plus  ml-2"></i>
+                 @can('create appointments')
+                     <a href="{{route('appointment.create')}}" class="btn-bs-primary  mr-5">Add Appointment
+                         <i class="fas fa-calendar-check  ml-2"></i>
                      </a>
                  @endcan
               </div>
-
-            @include('appointment.table-list',[
-               'listData'=>$doctors->toArray(),
-               "headings"=>[
-                   'Name',
-                    'Specialist',
+        @include('appointment.table-list',[
+                'listData'=>$appointments->toArray(),
+                "headings"=>[
+                    'Appointment Number',
+                    'Patient Name',
+                    'Doctor',
+                    'Appointment Date',
+                    'Appointment Time ',
                     'Status',
-                    'Gender',
-                    'Mobile',
                     'Action',
-            ]])
-
+          ]])
 
 
         </div>

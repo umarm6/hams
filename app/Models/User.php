@@ -49,14 +49,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function DoctorInfo(): HasOne
+    public function doctorInfo(): HasOne
     {
         return $this->hasOne(DoctorInfo::class);
     }
 
-    public function DoctorSchedules(): HasMany
+    public function doctorSchedules(): HasMany
     {
         return $this->hasMany(DoctorSchedules::class,'doctor_id');
+    }
+
+    public function doctorAppointments(): HasMany
+    {
+        return $this->hasMany(Appointments::class,'doctor_id');
+    }
+    public function PatientAppointments(): HasMany
+    {
+        return $this->hasMany(Appointments::class,'patient_ids');
     }
 
     public function getFullNameAttribute(){
