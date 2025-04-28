@@ -5,6 +5,7 @@ A Laravel-based web application providing a modern, clean, and efficient develop
 ## 📖 Features
 
 - User Authentication & Registration
+- Role and Permission based access
 - Unit and Feature Testing with PHPUnit
 - Database Migrations and Seeders
 - Laravel Blade Templating
