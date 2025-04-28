@@ -6,14 +6,14 @@ enum RolesEnum: string
 {
     case ADMIN = 'admin';
     case DOCTOR = 'doctor';
-    case Patients = 'patients';
+    case PATIENTS = 'patients';
 
     // extra helper to allow for greater customization of displayed values, without disclosing the name/value data directly
     public function label(): string
     {
         return match ($this) {
             static::DOCTOR => 'Doctor',
-            static::Patients => 'Patients',
+            static::PATIENTS => 'Patients',
             static::ADMIN => 'Admin',
         };
     }
@@ -27,15 +27,22 @@ enum RolesEnum: string
                 'create appointments',
                 'delete appointments',
                 'approveOrCancel appointments',
-                'view ehr records',
-                'create ehr records',
-                'delete ehr records',
+                'view medical records',
+                'edit medical records',
+                'create medical records',
+                'delete medical records',
+                'view prescriptions',
+                'edit prescriptions',
+                'create prescriptions',
+                'delete prescriptions',
             ],
-            static::Patients => [
+            static::PATIENTS => [
                 'view appointments',
                 'edit appointments',
                 'create appointments',
                 'delete appointments',
+                'view medical records',
+                'view prescriptions',
             ],
             static::ADMIN => [
                 'view dashboard',
@@ -52,9 +59,14 @@ enum RolesEnum: string
                 'create appointments',
                 'delete appointments',
                 'approveOrCancel appointments',
-                'view ehr records',
-                'create ehr records',
-                'delete ehr records',
+                'view medical records',
+                'edit medical records',
+                'create medical records',
+                'delete medical records',
+                'view prescriptions',
+                'edit prescriptions',
+                'create prescriptions',
+                'delete prescriptions',
             ],
         };
     }

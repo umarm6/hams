@@ -1,0 +1,50 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="max-w-3xl mx-auto p-4">
+        <h2 class="text-2xl font-bold mb-4">Edit Medical Record</h2>
+
+        <form action="{{ route('medical-records.update', $medicalRecord) }}" method="POST" class="space-y-4">
+            @csrf @method('PUT')
+
+            <div>
+                <label class="block text-sm font-medium">Patient</label>
+                <select name="patient_id" class="w-full border-gray-300 rounded p-2">
+                    @foreach($patients as $patient)
+                        <option value="{{ $patient->id }}" {{ $patient->id == $medicalRecord->patient_id ? 'selected' : '' }}>
+                            {{ $patient->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="{{ Auth::user()->roles->first()->name === \App\Enums\RolesEnum::DOCTOR->value  ? 'hidden ' : null }}">
+                <label class="block text-sm font-medium">Doctor</label>
+                <select name="doctor_id" class="w-full border-gray-300 rounded p-2 " >
+                    @foreach($doctors as $doctor)
+                        <option value="{{ $doctor->id }}" {{ $doctor->id == $medicalRecord->doctor_id ? 'selected' : '' }}>
+                            {{ $doctor->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Diagnosis</label>
+                <input type="text" name="diagnosis" value="{{ $medicalRecord->diagnosis }}" class="w-full border-gray-300 rounded p-2" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Notes</label>
+                <textarea name="notes" class="w-full border-gray-300 rounded p-2">{{ $medicalRecord->notes }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Date</label>
+                <input type="date" name="record_date" value="{{ $medicalRecord->record_date }}" class="w-full border-gray-300 rounded p-2" required>
+            </div>
+
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
+        </form>
+    </div>
+@endsection

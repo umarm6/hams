@@ -52,7 +52,10 @@
                                  <label for="fee" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Doctor Fee</label>
                                 <input type="number" value="{{$user?->doctorInfo->doctor_fee}}" id="fee" name="fee" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
                             </div>
-
+                              <div>
+                                  <label for="fee" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Patient Examination</label>
+                                  <input type="number" value="{{$user?->doctorInfo->patient_examination}}" id="patient_examination" name="patient_examination" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
+                              </div>
                             <div>
                                 <label for="specialist" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Specialist</label>
                                 <select   id="specialist" name="specialist"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
@@ -84,7 +87,7 @@
 
 
                         <h2 class="text-black my-3">Doctor availability </h2>
-                         <div class="grid gap-2 mb-6 grid-cols-3 mt-3`">
+                          <div class="grid gap-2 mb-6 grid-cols-3 mt-3`">
                             <div class="grid gap-2 mb-6 grid-cols-3 mt-3 mr-10">
                                  <div>
                                     <label for="day" class="mt-10 flex  mb-2 text-sm font-medium text-gray-900 dark:text-white"> Monday
@@ -93,7 +96,7 @@
                                 </div>
                                 <div>
                                     <label for="start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Time</label>
-                                    <input type="time" value="{{in_array('Monday',array_column($doctorSchedules,'day')) ? $doctorSchedules[array_search('Monday',array_column($doctorSchedules,'day'))]['start_time'] : null}}" id="start_time"  name="start_time[Monday]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe"  />
+                                     <input type="time" value="{{in_array('Monday',array_column($doctorSchedules,'day')) ? $doctorSchedules[array_search('Monday',array_column($doctorSchedules,'day'))]['start_time'] : null}}" id="start_time"  name="start_time[Monday]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe"  />
                                 </div>
                                 <div>
                                     <label for="end_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End Time</label>

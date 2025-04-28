@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'mobile' => $request->mobile,
             'password' => Hash::make($request->password),
-        ])->assignRole(RolesEnum::Patients->value);
+        ])->assignRole(RolesEnum::PATIENTS->value);
 
         event(new Registered($user));
 

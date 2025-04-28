@@ -21,7 +21,7 @@ class AppointmentTest extends TestCase
         $this->artisan('db:seed');
 
         $this->patient = User::factory(1)->create()->each(function ($user) {
-            $user->assignRole(RolesEnum::Patients->value);
+            $user->assignRole(RolesEnum::PATIENTS->value);
         })->first();
 
         $this->doctor = User::factory(1)->create()->each(function ($user) {

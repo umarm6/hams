@@ -12,7 +12,7 @@ class Appointments extends Model
     use HasFactory;
     protected $guarded = [];
     //
-    public function patient(): BelongsTo
+    public function patients(): BelongsTo
     {
         return $this->belongsTo(User::class,'patient_id','id');
     }
@@ -26,8 +26,8 @@ class Appointments extends Model
     protected function casts(): array
     {
         return [
-            'appointment_date' => 'date',
-            'appointment_time' => 'datetime'
+            'appointment_date' => 'date:Y-m-d',
+            'appointment_time' => 'datetime:H:i',
         ];
     }
 }

@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function doctorInfo(): HasOne
     {
-        return $this->hasOne(DoctorInfo::class);
+        return $this->hasOne(DoctorInfo::class,'user_id','id');
     }
 
     public function doctorSchedules(): HasMany
@@ -63,7 +63,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Appointments::class,'doctor_id');
     }
-    public function PatientAppointments(): HasMany
+    public function patientAppointments(): HasMany
     {
         return $this->hasMany(Appointments::class,'patient_ids');
     }
@@ -71,4 +71,15 @@ class User extends Authenticatable
     public function getFullNameAttribute(){
         return "$this->first_name $this->last_name";
     }
+
+    public function patientMedicalRecords(): HasMany
+    {
+        return $this->hasMany(MedicalRecord::class,'patient_id');
+    }
+    public function prescriptions(): HasMany
+    {
+        return $this->hasMany(Prescription::class,'patient_id');
+    }
+
+
 }

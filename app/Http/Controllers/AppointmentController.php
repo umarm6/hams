@@ -6,6 +6,7 @@ use App\Constants\Specialist;
 use App\Enums\RolesEnum;
 use App\Models\Appointments;
 use App\Models\DoctorInfo;
+use App\Models\Prescription;
 use App\Models\User;
 use Carbon\Carbon;
 use Devrabiul\ToastMagic\Facades\ToastMagic;
@@ -24,14 +25,15 @@ class AppointmentController extends Controller
     public function index(){
 
         $user = Auth::user();
-        $appointments = Appointments::wherePatientId($user?->id)->get()->sortByDesc('created_at'); //default patient role
+        $appointments = Appointments::wherePatientId($user?->id)->with([RolesEnum::PATIENTS->value])->orderBy('id','desc')->latest()->paginate(10);; //default patient role
 
         if($user->hasRole(RolesEnum::DOCTOR->value)){
-            $appointments = Appointments::whereDoctorId($user?->id)->get()->sortByDesc('created_at');
-        }
+            $appointments = Appointments::whereDoctorId($user?->id)->with([RolesEnum::PATIENTS->value,RolesEnum::DOCTOR->value])->orderBy('id','desc')->latest()->paginate(10);; //default patient role
+         }
 
         if($user->hasRole(RolesEnum::ADMIN->value)){
-            $appointments = Appointments::all()->sortByDesc('created_at');
+
+            $appointments = Appointments::orderBy('id','desc')->latest()->paginate(10);;
         }
 
         return view('appointment.index',[
@@ -129,27 +131,27 @@ class AppointmentController extends Controller
         if (Appointments::find($id)){
             Appointments::destroy($id);
             ToastMagic::success('Appointment deleted successfully');
-            return redirect()->back();
+            return redirect()->route('appointment.index');
         }
 
         ToastMagic::error('Appointment could not deleted');
-        return redirect()->back();
+        return redirect()->route('appointment.index');
 
     }
 
 
-        public function approveOrCancel($status, $id){
+    public function approveOrCancel($status, $id){
 
-        if (Appointments::find($id)){
+         if (Appointments::find($id)){
             Appointments::whereId($id)->update([
                 'status'=>$status
             ]);
             ToastMagic::success("Appointment $status successfully");
-            return redirect()->back();
+            return redirect()->route('appointment.index');
         }
 
         ToastMagic::error("Appointment could not $status");
-        return redirect()->back();
+        return redirect()->route('appointment.index');
 
     }
 

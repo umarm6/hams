@@ -22,8 +22,8 @@ class DoctorsController extends Controller
 
     public function index(){
 
-        $doctors = User::role('doctor')->with('doctorInfo')->get(); // Returns only users with the role 'writer'
-     return view('doctors.index',[
+        $doctors = User::role(RolesEnum::DOCTOR->value)->with('doctorInfo')->latest()->orderBy('id','desc')->paginate(10); // Returns only users with the role 'writer'
+        return view('doctors.index',[
             'doctors'=>$doctors
         ]);
     }
@@ -115,26 +115,23 @@ class DoctorsController extends Controller
             Log::info($exception->getMessage());
             ToastMagic::error($exception->getMessage());
 
-            return redirect()->back();
+            return redirect()->route('doctors.index');
 
          }
         ToastMagic::success('Doctor created successfully');
 
-        return redirect()->back();
+        return redirect()->route('doctors.index');
     }
 
     public function edit($id){
         $specialist = Specialist::data(); // Returns only users with the role 'writer'
         $user = User::whereId($id)->with(['doctorInfo'])->role(RolesEnum::DOCTOR->value)->firstOrFail();
-
-//        dump($user->doctorSchedules()->get()->pluck('day'));
-//         dd($user->doctorSchedules()->get()->mergeRecursive([array_values(['day'=>array_diff(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],$user->doctorSchedules()->get()->pluck('day')->toArray())])])->toArray());
-         return view('doctors.edit',
+          return view('doctors.edit',
             [
             'user'=>$user,
             'specialist'=>$specialist,
             'doctorSchedules'=>$user->doctorSchedules()->get()->toArray()
-            ]);
+        ]);
     }
 
     public function update(Request $request,$id){
@@ -142,6 +139,7 @@ class DoctorsController extends Controller
         $validator = Validator::make($request->all(),array(
             'email' => 'required|email|',
         ));
+
 
         if($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
@@ -169,7 +167,7 @@ class DoctorsController extends Controller
             ]);
 
 
-            $user?->DoctorInfo->update([
+            $user?->doctorInfo->update([
                 'user_id'=>$user->id,
                 'doctor_fee'=>$request?->fee,
                 'patient_examination'=>$request?->patient_examination,
@@ -180,6 +178,8 @@ class DoctorsController extends Controller
 
             //creating doctor availability schedule
             $days = $request->get('day');
+
+
             if (count($days) > 1){
 
                 foreach ($days as $day) {
