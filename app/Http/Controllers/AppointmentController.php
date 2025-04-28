@@ -40,7 +40,7 @@ class AppointmentController extends Controller
 
     }
 
-    public function create(Request $request,$id = null){
+    public function create(Request $request,$id = null ,$date=null){
 
         if (!User::find($id)?->exists()  && $id != null){
             ToastMagic::error('Doctor not found');
@@ -51,7 +51,8 @@ class AppointmentController extends Controller
 
         return view('appointment.create',[
             'doctors'=>$doctors,
-            'selectedDoctor'=>$id
+            'selectedDoctor'=>$id,
+            'date'=>$date
         ]);
     }
 
@@ -59,9 +60,9 @@ class AppointmentController extends Controller
 
 
         $validator = Validator::make($request->all(),array(
-            'doctor' => 'required|exists:users,id',
             'mobile' => 'required',
-            'email' => 'required'
+            'email' => 'required',
+
         ));
 
         if($validator->fails()) {
@@ -77,7 +78,6 @@ class AppointmentController extends Controller
         $day = Carbon::parse($request->get('date'))->format('l');
 
         $doctorSchedule = $doctor->doctorSchedules()->where('day','=',$day);
-        dump($request->all());
 
         if(!$doctorSchedule->exists()){
             ToastMagic::error('Doctor is not available on this date');

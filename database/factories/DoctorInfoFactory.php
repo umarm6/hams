@@ -14,6 +14,7 @@ class DoctorInfoFactory extends Factory
     {
         return [
             'doctor_fee' => fake()->randomElement([1000,1500,2000,2500]),
+            'patient_examination' => fake()->randomElement([10,15,20,25]),
             'specialist' => fake()->randomElement(Specialist::data()),
             'description' => fake()->paragraph(),
             'qualification' => fake()->text(),

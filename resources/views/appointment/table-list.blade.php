@@ -27,36 +27,36 @@ use Carbon\Carbon;
                  </div>
             </td>
             <td class="px-6 py-4">
-                {{$data['doctor_id']}}
+                {{$data['doctor_id'] ?? null}}
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center text-black">
-                     {{Carbon::parse($data['appointment_date'])->format('Y-m-d')}}
+                     {{isset($data['appointment_date']) ? Carbon::parse($data['appointment_date'])->format('Y-m-d') : null}}
 
                 </div>
             </td>
 
             <td class="px-6 py-4">
                 <div class="flex items-center text-black">
-                     {{Carbon::parse($data['appointment_time'])->format('H:i:a')}}
+                     {{isset($data['appointment_date']) ? Carbon::parse($data['appointment_time'])->format('H:i:a') : null}}
                 </div>
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center text-black">
-                    <div class=" w-3 h-3 rounded-full mr-1   {{strtolower($data['status'])}}-bg"></div>
-                    {{strtolower($data['status'])}}
+                    <div class=" w-3 h-3 rounded-full mr-1   {{strtolower($data['status']) ?? null}}-bg"></div>
+                    {{strtolower($data['status']) ?? null}}
 
                 </div>
             </td>
             <td class="px-6 py-4">
-                @if($data['patient_id'] === Auth::user()->id)
+                @if(isset($data['patient_id']) && $data['patient_id'] === Auth::user()->id)
                 <a   href="javascript:void(0);" title="Delete" data-id="{{$data['id']}}" data-route="{{route('appointment.destroy',$data['id'])}}" class=" delete-item font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
                      <i class="fa-trash fas"> </i>
                 </a>
                 @endif
 
 
-                @if(strtolower($data['status']) === 'pending')
+                @if(strtolower($data['status']) === 'pending' && Auth::user()->can('approveOrCancel appointments'))
 
                 <a href="javascript:void(0);" title="Approve" data-id="{{$data['id']}}" data-route="{{route('appointment.approve',['confirmed',$data['id']])}}" class=" approve-item font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2">
                      <i class=" fa-thumbs-up fas"> </i>

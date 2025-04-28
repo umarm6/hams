@@ -23,7 +23,7 @@ class DoctorsController extends Controller
     public function index(){
 
         $doctors = User::role('doctor')->with('doctorInfo')->get(); // Returns only users with the role 'writer'
-        return view('doctors.index',[
+     return view('doctors.index',[
             'doctors'=>$doctors
         ]);
     }
@@ -46,7 +46,7 @@ class DoctorsController extends Controller
         $doctors = User::find($request->get('doctor'))->doctorSchedules()->where('day','=',$day)->exists();
 
          if($doctors){
-             return redirect()->route('appointment.create',$request->get('doctor'));
+             return redirect()->route('appointment.create',[$request->get('doctor'),$request->get('date')]);
         }
 
          return redirect()->back()->withErrors('Doctor not available on this day');

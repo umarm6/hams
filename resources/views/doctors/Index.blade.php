@@ -16,7 +16,7 @@
                  @endcan
               </div>
 
-            @include('appointment.table-list',[
+            @include('doctors.table-list',[
                'listData'=>$doctors->toArray(),
                "headings"=>[
                    'Name',

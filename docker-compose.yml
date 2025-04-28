@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: hams_app_local
+        volumes:
+            - .:/var/www
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+
+    db:
+        image: mysql:8.1
+        container_name: hams_db_local
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: hms
+            MYSQL_USER: dev
+            MYSQL_PASSWORD: 123
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./storage/dbdata:/var/lib/mysql
+    test_db:
+        image: mysql:8.1
+        container_name: hams_db_test_local
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: hms_test
+            MYSQL_USER: dev
+            MYSQL_PASSWORD: 123
+        ports:
+            - "3307:3306"
+        volumes:
+            - ./storage/dbdata-test:/var/lib/mysql
+
+volumes:
+    dbdata:
