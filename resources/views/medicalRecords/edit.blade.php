@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-3xl mx-auto p-4">
+    <div class="w-1/2 mx-auto p-4 mt-5">
         <h2 class="text-2xl font-bold mb-4">Edit Medical Record</h2>
 
         <form action="{{ route('medical-records.update', $medicalRecord) }}" method="POST" class="space-y-4">
@@ -12,7 +12,7 @@
                 <select name="patient_id" class="w-full border-gray-300 rounded p-2">
                     @foreach($patients as $patient)
                         <option value="{{ $patient->id }}" {{ $patient->id == $medicalRecord->patient_id ? 'selected' : '' }}>
-                            {{ $patient->name }}
+                            {{ $patient->full_name }}
                         </option>
                     @endforeach
                 </select>
@@ -23,7 +23,7 @@
                 <select name="doctor_id" class="w-full border-gray-300 rounded p-2 " >
                     @foreach($doctors as $doctor)
                         <option value="{{ $doctor->id }}" {{ $doctor->id == $medicalRecord->doctor_id ? 'selected' : '' }}>
-                            {{ $doctor->name }}
+                            {{ $doctor->full_name }}
                         </option>
                     @endforeach
                 </select>
