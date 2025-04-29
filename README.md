@@ -30,6 +30,13 @@ A Laravel-based web application providing a modern, clean, and efficient develop
 
 ### Installation
 
+### 📂 Import Database
+
+- create a database and upload hams.sql ( make sure env database credentials)
+- create a database for unit test and upload hams-test.sql
+- please make sure unit test env  (env.testing) database configuration is correct
+
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/umarm6/hams.git
