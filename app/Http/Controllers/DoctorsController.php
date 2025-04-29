@@ -49,7 +49,7 @@ class DoctorsController extends Controller
              return redirect()->route('appointment.create',[$request->get('doctor'),$request->get('date')]);
         }
 
-         return redirect()->back()->withErrors('Doctor not available on this day');
+         return redirect()->route('index',['#appointmentc'])->withErrors('Doctor not available on this day');
 
     }
 

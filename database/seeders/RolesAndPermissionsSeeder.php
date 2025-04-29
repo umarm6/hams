@@ -58,7 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
                    User::factory(1)->create([
                         'email' => $email,
-                        'password' => Hash::make('admin'),
+                        'password' => Hash::make('password'),
                     ])->each(function ($user) {
                             $user->assignRole(RolesEnum::ADMIN->value);
                     });
@@ -71,7 +71,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
                     User::factory(1)->create([
                         'email' => $email,
-                        'password' => Hash::make('doctor'),
+                        'password' => Hash::make('password'),
                     ])->each(function ($user) {
                         $user->assignRole(RolesEnum::DOCTOR->value);
                         if ($user->hasRole(RolesEnum::DOCTOR->value)) {
@@ -80,6 +80,20 @@ class RolesAndPermissionsSeeder extends Seeder
                             ]);
                         }
 
+                    });;
+
+                }
+            }
+
+            if ($roles->value === RolesEnum::PATIENTS->value) {
+
+                if (!User::whereEmail($email)->exists()) {
+
+                    User::factory(1)->create([
+                        'email' => $email,
+                        'password' => Hash::make('password'),
+                    ])->each(function ($user) {
+                        $user->assignRole(RolesEnum::PATIENTS->value);
                     });;
 
                 }

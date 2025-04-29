@@ -3,7 +3,7 @@
     <div class="min-h-screen flex bg-teal-500 flex-col justify-center items-center pt-6 pt-0 bg-gray-100 dark:bg-gray-900">
 
 
-        <div class="w-1/3 sm:max-w-md mt-6 px-6 py-4 bg-teal-200 dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+        <div class="w-1/3 sm:max-w-md mt-40 mb-40 px-6 py-4 bg-teal-200 dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
 
         <form method="POST" action="{{ route('register') }}">
         @csrf

@@ -19,8 +19,6 @@ class MedicalRecordFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_id' => User::factory()->create()->assignRole(RolesEnum::PATIENTS->value)->id,
-            'doctor_id' => User::factory()->create()->assignRole(RolesEnum::DOCTOR->value)->id,
             'diagnosis' => $this->faker->sentence(3),
             'notes' => $this->faker->paragraph(),
             'record_date' => $this->faker->date(),

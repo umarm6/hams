@@ -49,7 +49,7 @@
                              @endif
 
 
-                             @if(isset($record->patient_id) && $record->patient_id === Auth::user()->id || Auth::user()->hasRole(\App\Enums\RolesEnum::ADMIN))
+                             @if($record->status === 'pending' && isset($record->patient_id) && $record->patient_id === Auth::user()->id || Auth::user()->hasRole(\App\Enums\RolesEnum::ADMIN))
 
 
                                  <form action="{{ route('appointment.destroy', $record) }}" method="POST" class="inline">

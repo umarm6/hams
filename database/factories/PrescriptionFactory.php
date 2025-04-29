@@ -19,8 +19,6 @@ class PrescriptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_id'        => User::factory()->create()->assignRole(RolesEnum::PATIENTS->value)->id,
-            'doctor_id'         => User::factory()->create()->assignRole(RolesEnum::DOCTOR->value)->id,
             'medication_name'   => $this->faker->word(),
             'dosage'            => $this->faker->randomElement(['5mg', '10mg', '1 tablet']),
             'frequency'         => $this->faker->randomElement(['Once a day', 'Twice a day', 'Every 6 hours']),

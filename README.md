@@ -1,4 +1,4 @@
-# Laravel Project
+# HAMS Project
 
 A Laravel-based web application providing a modern, clean, and efficient development environment for web solutions.
 
@@ -87,7 +87,9 @@ or
 - tests/ - Unit and Feature tests 
 - resources/ - Blade templates and frontend assets
 
-
+### Student Names
+- Mohamed Umar
+- 
 
 
 
