@@ -31,19 +31,28 @@
                         <td class="px-4 py-2">{{ $record->prescribed_date }}</td>
                         <td class="px-4 py-2 space-x-2">
 
-                             <a href="{{ route('prescriptions.show', $record) }}" class="text-yellow-600 hover:underline">
+                            @can('view prescriptions')
+
+                            <a href="{{ route('prescriptions.show', $record) }}" class="text-yellow-600 hover:underline">
                                  <i class="fa-eye fas"> </i>
                              </a>
+                            @endcan
+                            @can('edit prescriptions')
 
                             <a href="{{ route('prescriptions.edit', $record) }}" class="text-yellow-600 hover:underline">
                                  <i class="fa-edit fas"> </i>
                              </a>
+                            @endcan
+                            @can('delete prescriptions')
+
                             <form action="{{ route('prescriptions.destroy', $record) }}" method="POST" class="inline">
                                 @csrf @method('DELETE')
                                 <button onclick="return confirm('Delete this record?')" class="text-red-600 hover:underline">
                                     <i class="fa-trash fas"> </i>
                                 </button>
                             </form>
+
+                                @endcan
                         </td>
                     </tr>
                 @endforeach

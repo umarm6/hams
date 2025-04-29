@@ -30,16 +30,30 @@
                         <td class="px-4 py-2">{{ $record->diagnosis }}</td>
                         <td class="px-4 py-2">{{ $record->record_date }}</td>
                         <td class="px-4 py-2 space-x-2">
+
+
+                            @can('view medical records')
+
+                                <a href="{{ route('medical-records.show', $record) }}" class="text-yellow-600 hover:underline">
+                                    <i class="fa-eye fas"> </i>
+                                </a>
+                            @endcan
+
+                            @can('edit medical records')
                              <a href="{{ route('medical-records.edit', $record) }}" class="text-yellow-600 hover:underline">
                                  <i class="fa-edit fas"> </i>
 
                              </a>
-                            <form action="{{ route('medical-records.destroy', $record) }}" method="POST" class="inline">
+                            @endcan
+
+                            @can('delete medical records')
+                                <form action="{{ route('medical-records.destroy', $record) }}" method="POST" class="inline">
                                 @csrf @method('DELETE')
                                 <button onclick="return confirm('Delete this record?')" class="text-red-600 hover:underline">
                                     <i class="fa-trash fas"> </i>
                                 </button>
                             </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
